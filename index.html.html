@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flávia Somazz Social Media — Calendário + Robô</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #0D1B2A; color: #F5EFE6; line-height: 1.7; }
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 4rem 2rem; background: #0D1B2A; border-bottom: 1px solid rgba(245,239,230,0.1); }
+  .hero-tag { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #C4A882; margin-bottom: 2rem; font-weight: 500; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 700; line-height: 1.1; color: #F5EFE6; max-width: 800px; margin-bottom: 1rem; }
+  .hero h1 em { font-style: italic; color: #C4A882; }
+  .hero-sub { font-size: clamp(1rem, 2vw, 1.2rem); color: rgba(245,239,230,0.7); max-width: 520px; margin: 1.5rem auto 2.5rem; font-weight: 300; }
+  .btn-primary { display: inline-block; background: #C4A882; color: #0D1B2A; padding: 1rem 2.5rem; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; cursor: pointer; border: none; transition: all 0.2s; }
+  .btn-primary:hover { background: #D4B892; }
+  .btn-secondary { display: inline-block; background: transparent; color: #C4A882; padding: 0.9rem 2.5rem; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; cursor: pointer; border: 1px solid #C4A882; transition: all 0.2s; margin-left: 1rem; }
+  .btn-secondary:hover { background: rgba(196,168,130,0.1); }
+  .section-tag { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #C4A882; margin-bottom: 1rem; font-weight: 500; }
+  .divider { width: 60px; height: 1px; background: #C4A882; margin: 2rem 0; }
+  .packages { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .package-card { background: rgba(245,239,230,0.03); border: 1px solid rgba(245,239,230,0.1); padding: 2.5rem 2rem; position: relative; transition: border-color 0.2s; }
+  .package-card:hover { border-color: rgba(196,168,130,0.4); }
+  .package-card.featured { border-color: #C4A882; background: rgba(196,168,130,0.05); }
+  .package-badge { position: absolute; top: -12px; left: 2rem; background: #C4A882; color: #0D1B2A; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 12px; font-weight: 500; }
+  .package-name { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #F5EFE6; margin-bottom: 0.5rem; }
+  .package-price { font-size: 2.5rem; font-weight: 300; color: #C4A882; margin: 1.5rem 0; font-family: 'Playfair Display', serif; }
+  .package-price span { font-size: 1rem; color: rgba(245,239,230,0.5); font-family: 'DM Sans', sans-serif; }
+  .package-desc { font-size: 0.9rem; color: rgba(245,239,230,0.6); font-weight: 300; margin-bottom: 1.5rem; line-height: 1.6; }
+  .package-items { list-style: none; margin-bottom: 2rem; }
+  .package-items li { font-size: 0.9rem; color: rgba(245,239,230,0.8); padding: 0.4rem 0; border-bottom: 1px solid rgba(245,239,230,0.05); display: flex; align-items: center; gap: 8px; font-weight: 300; }
+  .package-items li:before { content: ''; width: 6px; height: 6px; background: #C4A882; flex-shrink: 0; }
+  .pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 2.5rem; }
+  .pain-item { padding: 1.5rem; border-left: 2px solid #C4A882; background: rgba(245,239,230,0.02); }
+  .pain-item p { font-size: 0.95rem; color: rgba(245,239,230,0.7); font-weight: 300; }
+  .process-steps { margin-top: 2.5rem; display: flex; flex-direction: column; }
+  .step { display: grid; grid-template-columns: 60px 1fr; gap: 1.5rem; padding: 2rem 0; border-bottom: 1px solid rgba(245,239,230,0.07); align-items: start; }
+  .step-num { font-family: 'Playfair Display', serif; font-size: 3rem; color: rgba(196,168,130,0.2); font-weight: 700; line-height: 1; }
+  .step h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #F5EFE6; margin-bottom: 0.5rem; font-weight: 400; }
+  .step p { font-size: 0.9rem; color: rgba(245,239,230,0.6); font-weight: 300; }
+  .cta-section { background: rgba(196,168,130,0.07); border-top: 1px solid rgba(196,168,130,0.2); border-bottom: 1px solid rgba(196,168,130,0.2); padding: 5rem 2rem; text-align: center; }
+  .highlight-box { background: rgba(196,168,130,0.08); border: 1px solid rgba(196,168,130,0.25); padding: 2rem; margin-top: 2rem; }
+  .highlight-box p { font-size: 1.1rem; font-style: italic; color: rgba(245,239,230,0.8); font-family: 'Playfair Display', serif; }
+  .footer { padding: 2rem; text-align: center; border-top: 1px solid rgba(245,239,230,0.07); }
+  .footer p { font-size: 12px; color: rgba(245,239,230,0.3); letter-spacing: 1px; font-weight: 300; }
+  @media (max-width: 600px) { .btn-secondary { margin-left: 0; margin-top: 1rem; display: block; } }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <p class="hero-tag">Flávia Somazz Studio · Gestão de Conteúdo</p>
+  <h1>Seu Instagram com <em>direção.</em><br>Não com improviso.</h1>
+  <p class="hero-sub">Calendário estratégico + Robô com a sua voz — entregues feitos, pra empresária sem tempo.</p>
+  <div>
+    <a href="#pacotes" class="btn-primary">Ver pacotes</a>
+    <a href="#como-funciona" class="btn-secondary">Como funciona</a>
+  </div>
+</section>
+
+<section style="padding: 5rem 2rem; max-width: 1000px; margin: 0 auto;">
+  <p class="section-tag">O problema</p>
+  <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 3rem); color: #F5EFE6; line-height: 1.2; margin-bottom: 1.5rem;">Post bonito não<br><em style="color: #C4A882;">paga conta.</em></h2>
+  <div class="divider"></div>
+  <p style="color: rgba(245,239,230,0.7); font-size: 1.05rem; font-weight: 300; max-width: 600px;">Se você posta, se esforça e o WhatsApp ainda fica em silêncio — o problema não é você. É a falta de um caminho.</p>
+  <div class="pain-grid">
+    <div class="pain-item"><p>Decide o que postar todo dia do zero</p></div>
+    <div class="pain-item"><p>Posta muito e colhe pouco</p></div>
+    <div class="pain-item"><p>Tem o Instagram bonito mas a agenda vazia</p></div>
+    <div class="pain-item"><p>Não tem tempo pra ficar criando conteúdo todo dia</p></div>
+  </div>
+</section>
+
+<section id="pacotes" style="background: rgba(245,239,230,0.02); border-top: 1px solid rgba(245,239,230,0.07); border-bottom: 1px solid rgba(245,239,230,0.07); padding: 5rem 2rem;">
+  <div style="max-width: 1000px; margin: 0 auto;">
+    <p class="section-tag">Pacotes</p>
+    <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 3rem); color: #F5EFE6; line-height: 1.2; margin-bottom: 1.5rem;">Uma direção.<br><em style="color: #C4A882;">Duas opções.</em></h2>
+    <div class="divider"></div>
+    <div class="packages">
+
+      <div class="package-card">
+        <p class="package-name">Calendário Estratégico</p>
+        <p class="package-desc">Estudo da sua marca + calendário editorial com lógica de funil. Sem designs — só estratégia pronta pra executar.</p>
+        <p class="package-price">R$ 480 <span>/ entrega única</span></p>
+        <ul class="package-items">
+          <li>Estudo completo da sua marca</li>
+          <li>30 dias de conteúdo planejado</li>
+          <li>Temas, formatos e CTAs definidos</li>
+          <li>Lógica de funil em cada semana</li>
+          <li>Entrega em até 7 dias úteis</li>
+        </ul>
+        <a href="https://wa.me/5519983089949?text=Olá! Tenho interesse no Calendário Estratégico." class="btn-primary" style="width: 100%; text-align: center; display: block;">Me chama com CALENDÁRIO</a>
+      </div>
+
+      <div class="package-card featured">
+        <span class="package-badge">Recomendado</span>
+        <p class="package-name">Calendário + Robô</p>
+        <p class="package-desc">Calendário estratégico completo + assistente de IA treinado com a sua linguagem, tom de voz e jeito de falar.</p>
+        <p class="package-price">R$ 780 <span>/ entrega única</span></p>
+        <ul class="package-items">
+          <li>Tudo do Calendário Estratégico</li>
+          <li>Robô treinado com sua linguagem</li>
+          <li>Responde e cria no seu tom de voz</li>
+          <li>Entregue via link com instruções</li>
+          <li>Direção + velocidade sem perder identidade</li>
+        </ul>
+        <a href="https://wa.me/5519983089949?text=Olá! Tenho interesse no Pacote Calendário + Robô." class="btn-primary" style="width: 100%; text-align: center; display: block;">Me chama com ROBÔ</a>
+      </div>
+
+      <div class="package-card">
+        <p class="package-name">Só o Robô</p>
+        <p class="package-desc">Assistente de IA personalizado, treinado com a sua linguagem e tom de voz. Para quem já tem estratégia e quer velocidade.</p>
+        <p class="package-price">R$ 300 <span>/ entrega única</span></p>
+        <ul class="package-items">
+          <li>Briefing de linguagem e tom de voz</li>
+          <li>Robô treinado com seu jeito de falar</li>
+          <li>Entregue via link</li>
+          <li>Instruções de uso incluídas</li>
+          <li>Entrega em até 5 dias úteis</li>
+        </ul>
+        <a href="https://wa.me/5519983089949?text=Olá! Tenho interesse no Robô Personalizado." class="btn-primary" style="width: 100%; text-align: center; display: block;">Quero meu robô</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="como-funciona" style="padding: 5rem 2rem; max-width: 1000px; margin: 0 auto;">
+  <p class="section-tag">Processo</p>
+  <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 3rem); color: #F5EFE6; line-height: 1.2; margin-bottom: 1.5rem;">Como <em style="color: #C4A882;">funciona</em></h2>
+  <div class="divider"></div>
+  <div class="process-steps">
+    <div class="step">
+      <p class="step-num">01</p>
+      <div><h3>Você me chama no direct</h3><p>Com a palavra CALENDÁRIO, ROBÔ ou os dois. A gente toma um café e entende o seu momento.</p></div>
+    </div>
+    <div class="step">
+      <p class="step-num">02</p>
+      <div><h3>Briefing completo</h3><p>Você me conta sobre seu negócio, público, tom de voz e objetivos. É aqui que a estratégia começa.</p></div>
+    </div>
+    <div class="step">
+      <p class="step-num">03</p>
+      <div><h3>Estudo e criação</h3><p>Eu mergulho na sua marca e crio o calendário e/ou o robô treinado com a sua linguagem.</p></div>
+    </div>
+    <div class="step">
+      <p class="step-num">04</p>
+      <div><h3>Entrega em até 7 dias úteis</h3><p>Você recebe tudo pronto pra executar — sem precisar pensar, sem precisar decidir do zero.</p></div>
+    </div>
+  </div>
+  <div class="highlight-box">
+    <p>"Post sem caminho vira só desabafo bonito.<br>Com direção, ele vira ferramenta."</p>
+  </div>
+</section>
+
+<section class="cta-section">
+  <p class="section-tag" style="margin-bottom: 1rem;">Próximo passo</p>
+  <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.5rem); color: #F5EFE6; margin-bottom: 1rem;">Chega de improvisar.<br><em style="color: #C4A882;">Toma um café comigo.</em></h2>
+  <p style="color: rgba(245,239,230,0.6); font-size: 1rem; font-weight: 300; margin-bottom: 2.5rem; max-width: 500px; margin-left: auto; margin-right: auto;">Me chama no direct e a gente define seu Instagram juntas.</p>
+  <a href="https://instagram.com/flavia.somazz" class="btn-primary">Falar com a Flávia ☕</a>
+</section>
+
+<footer class="footer">
+  <p>Flávia Somazz  · @flavia.somazz · Gestão de Conteúdo Estratégico</p>
+</footer>
+
+</body>
+</html>
